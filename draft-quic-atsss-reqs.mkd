@@ -142,7 +142,7 @@ below can be generalized to any network interface that supports IP.
 
 Some users of these smartphones expect seamless handovers. For example, when
 they move out of the reach of their home WLAN, they expect that the established flows (e.g., TCP connections, UDP flows)
-will continue over the cellular interface without any interruption (called, session continuity). As the devices is assigned different IP addresses over
+will continue over the cellular interface without any interruption (called, session continuity). As to the devices different IP addresses are assigned over
 WLAN and the cellular networks, this seamless
 handover requires some specific assistance from the network. The current
 utilization of Multipath TCP on Apple smartphones is an example of this use
@@ -157,7 +157,7 @@ after a handover.
 
 Other users may want to combine the resources provided by the cellular and the WLAN networks
 to improve the performance of individual flows. The GigaLTE service deployed
-using Multipath TCP in South Korea in an example of this use case {{IETFJ16}}.
+using Multipath TCP in South Korea is an example of this use case {{IETFJ16}}.
 
 To support these different use cases in 5G networks, 3GPP is working on the
 Access Traffic Steering, Switching and Splitting (ATSSS) service {{TS23501}}. This work is
@@ -191,14 +191,14 @@ This document makes use of 3GPP specific terms defined in {{RFC6459}}, mainly th
 -    Packet Data Network (PDN): is a packet-based network that
       either belongs to the operator or is external (such as
       the Internet or a corporate intranet).  The user eventually
-      accesses services in one or more PDNs.  The operator's packet core
+      accesses services in one or more PDNs.  The operators packet core
       networks are separated from packet data networks either by User Plane Functions (UPFs).
 
 -     UE (User Equipment): refers to the devices that are hosts with the
       ability to obtain Internet connectivity via a 3GPP network.    
 
 - Access Point Name (APN): is a Fully Qualified Domain Name
-      (FQDN) and resolves to a set of gateways in an operator's network. Data Network Name (DNN) is the APN equivalent in 5GS. DNN is used for the selection of the UPF(s) for a PDU Session.
+      (FQDN) and resolves to a set of gateways in an operator's network. Data Network Name (DNN) is the APN equivalent in 5GS. DNN is used for the selection of the UPF(s) for a PDU (Protocol Data Unit) Session.
       
  -    User Plane: refers to data traffic and the required sessions for
       the data traffic.  In practice, IP is the only data traffic
@@ -210,14 +210,14 @@ The 5G Core (5GC) supports a service that provides exchange of data between a Us
 
 It is out of the scope of this document to provide a comprehensive overview of 5G System (5GS) architecture. In particular, this document does not describe how PDU Sessions are established, and thus how IP addresses/prefixes are assigned to requesting User Equipment (UEs). 
 
-An UE can be provided a multi-access PDU Connectivity Service. That is, an UE can exchange data with a PDN by using a "3GPP access network" and a "non-3GPP access network". Such service relies upon the ATSSS feature.
+A UE can be provided with a multi-access PDU Connectivity Service. That is, an UE can exchange data with a PDN by using a "3GPP access network" and a "non-3GPP access network". Such service relies upon the ATSSS feature.
 
 
 ## Reference Architecture
 
 
 To understand the operation of the ATSSS service, it is useful to consider the
-reference environment shown in {{fig-arch}}. An UE
+reference environment shown in {{fig-arch}}. A UE
 is attached to two different access networks (Access Net A and Access Net B).
 These two networks are potentially shared with other users and the available
 bandwidth varies over time. These fluctuations in bandwidth are managed by
@@ -230,7 +230,7 @@ is an IPSec tunnel between the UE and a dedicated device in the 5G network
 (not shown in {{fig-arch}}). A dedicated IP address is assigned by means of IKEv2 to the UE to access the 5GC via this second network. 
 
 The UE interacts with a distant server
-through a ATSSS specific User Plane Function further referred to as "Proxy"
+through an ATSSS specific User Plane Function further referred to as "Proxy"
 which supports ATSSS and is part of the 5G network.
 The Proxy enables the UE to use a transport protocol that supports
 the different access networks even if the server does not support it (i.e., is not multipath-capable
@@ -283,7 +283,7 @@ The traffic that matches an ATSSS rule can be distributed among available access
 
 These modes of operations were designed assuming that multipath protocols
 such as MPTCP {{RFC6824}} would be used over the different paths between
-the UE and the ATSSS. The implementations of these protocols include two
+the UE and the ATSSS Proxy. The implementations of these protocols include two
 types of mechanisms to control the utilization of the paths: (i) a
 path manager and (ii) a packet scheduler {{RFC8041}}.
 The path manager decides when a
@@ -298,8 +298,8 @@ of retransmissions. This mode of operation is similar to the utilization of
 Multipath TCP on iOS smartphones {{RFC8041}}.
 
 The "Smallest Delay" mode can be implemented using a path manager that
-establishes a subflow over both paths and a packet scheduler that measures
-their round-trip-times and prefers the one having the lowest round-trip-time.
+establishes a subflow over both paths and a packet scheduler that is provided with
+their measured round-trip-times and prefers the one having the lowest round-trip-time.
 These
 path manager and scheduler are similar to the default packet
 scheduler used by Multipath TCP on Linux {{RFC8041}}.
@@ -384,6 +384,7 @@ A future ATSSS would lose its impact if its scope does not extend
 beyond supporting TCP only.
 
 ----- OB to be discussed, not convinced that this discussion is needed for IETF
+----- DH proposal: Considering the increasing amount of such non-TCP services demanding also for benefits of multipath treatment, future ATSSS should be extended by supporting a new multipath protocol for non-TCP traffic.  
 
 However, UDP compared to TCP has different dimensions to be considered in
 respect to the ATSSS high-layer approach.
@@ -424,7 +425,7 @@ In ATSSSv1, each TCP connection originated by the UE corresponds to
 an MPTCP connection that is terminated on the ATSSS function. ATSSSv2 will
 leverage the multi-stream capability of QUIC to carry the bytestreams
 of multiple TCP connections on a single QUIC session.
-Consider an UE that is currently attached to
+Consider a UE that is currently attached to
 only one access network. This UE maintains one QUIC session with its
 ATSSS function. Every TCP connection that it creates results in the
 creation of a stream on the QUIC session with the ATSSSv2 function.
@@ -456,7 +457,7 @@ in IPSec or DTLS tunnels prevents problems that arise when a reliable protocol
 is used to transport packets that do not require reliable delivery or are
 subject to their own congestion control scheme.
 
-Two application layer protocols have propose to manage the mapping
+Two application layer protocols have been proposed to manage the mapping
 between TCP connections and QUIC streams and the transmission of UDP
 datagrams. The MASQUE BOF proposed to use the HTTP/3 CONNECT method to
 support TCP connections {{I-D.schinazi-masque-protocol}}
